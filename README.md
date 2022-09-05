@@ -104,6 +104,10 @@ request_context = app.test_request_context()
 request_context.push()
 ```
 
+> NOTE: If you are working in a debugging shell, it is a good idea to clear out
+> your `request_context` object with its `pop()` method before moving onto a new
+> request.
+
 As the name `test_request_context()` suggests, this only provides test data.
 You won't use this in your applications, but you might see it in the tests
 for Phase 4's labs.
@@ -136,30 +140,19 @@ if __name__ == '__main__':
 
 ***
 
+## Handling Requests
+
+### Dispatching Requests
+
+### Request Hooks
+
+***
+
+## Creating responses
+
+***
+
 ## Lesson Section
-
-Lorem ipsum dolor sit amet. Ut velit fugit et porro voluptas quia sequi quo
-libero autem qui similique placeat eum velit autem aut repellendus quia. Et
-Quis magni ut fugit obcaecati in expedita fugiat est iste rerum qui ipsam
-ducimus et quaerat maxime sit eaque minus. Est molestias voluptatem et nostrum
-recusandae qui incidunt Quis 33 ipsum perferendis sed similique architecto.
-
-```py
-# python code block
-print("statement")
-# => statement
-```
-
-```js
-// javascript code block
-console.log("use these for comparisons between languages.")
-// => use these for comparisons between languages.
-```
-
-```console
-echo "bash/zshell statement"
-# => bash/zshell statement
-```
 
 <details>
   <summary>
@@ -170,24 +163,6 @@ echo "bash/zshell statement"
   <p>Elaboration on answer.</p>
 </details>
 <br/>
-
-***
-
-## Instructions
-
-This is a **test-driven lab**. Run `pipenv install` to create your virtual
-environment and `pipenv shell` to enter the virtual environment. Then run
-`pytest -x` to run your tests. Use these instructions and `pytest`'s error
-messages to complete your work in the `lib/` folder.
-
-Instructions begin here:
-
-- Make sure to specify any class, method, variable, module, package names
-  that `pytest` will check for.
-- Any other instructions go here.
-
-Once all of your tests are passing, commit and push your work using `git` to
-submit.
 
 ***
 
