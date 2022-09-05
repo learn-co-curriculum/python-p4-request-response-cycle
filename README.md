@@ -138,17 +138,146 @@ if __name__ == '__main__':
 
 ```
 
+Flask also provides us two unique objects that allow us to manipulate request
+data more effectively:
+
+- `g` is an object that can be used to store anything that you want to store
+  globally for the lifetime of a request. It is reset with each new request.
+- `session` is a dictionary object that can be used to hold onto values
+  between multiple requests.
+
 ***
 
 ## Handling Requests
 
-### Dispatching Requests
+Now that we've seen how a request object is created, let's take a look at how
+requests are used by Flask applications.
+
+### The URL Map
+
+Every time an application receives a request, it has to decide which view to
+run to handle its data. Routes were helpful for defining where to serve our
+application's views, but now we need to use our application's _URL map_ to find
+the right view from a URL. The URL map is just as it sounds: a dictionary that
+maps URLs to the views that serve the client at those URLs. Every time we use
+the `@app.route` decorator, a new mapping is added to the URL map.
+
+We can view the URL map for ourselves in an `ipdb` shell. Run `python debug.py`
+from the base directory for this lesson and enter the following:
+
+```console
+$ ipdb> app.url_map
+# => Map([<Rule '/static/<filename>' (GET, HEAD, OPTIONS) -> static>,
+ <Rule '/' (GET, HEAD, OPTIONS) -> index>])
+```
+
+The first `Rule` we see exists by default: it is a special route that gives us
+access to static files through the client. The second, referring to the `'/'`
+URL, describes the `index()` view that we made above.
+
+`GET`, `HEAD`, and `OPTIONS` are request methods that are accepted through the
+routes. All HTTP (_and HTTPS_) requests must be issued with a request method to
+indicate what task the server is meant to carry out. `GET` requests a
+representation of the resource- this is the most common method your requests
+carry when you're surfing the web. `HEAD` is the same as `GET`, but requests
+that we leave out the body of the response. `OPTIONS` requests a list of the
+HTTP methods that a resource will accept. Flask will include all three by
+default- but you can remove them or add more later on if you'd like!
+
+_For more on HTTP request methods, visit the [Mozilla documentation][moz_http]
+here._
 
 ### Request Hooks
+
+As you build out a variety of Flask web applications, you will notice that there
+are many tasks that you want to carry out before or after most of your view
+functions. This could be as simple as generating a reminder message or as
+complex as multi-factor authentication- either way, you'll want to handle these
+with **hooks**.
+
+Hooks are best implemented as decorators. There are four types of hooks:
+
+1. `@app.before_request`: runs a function before each request.
+2. `@app.before_first_request`: runs a function before the first request (but not
+   subsequent requests).
+3. `@app.after_request`: runs a function after each request.
+4. `@app.teardown_request`: runs a function after each request, even if an error
+   has occurred.
+
+Let's set up a hook so that our views all know where our application files are
+located:
+
+```py
+# app/flask_app.py
+
+import os
+
+from flask import Flask, request, current_app, g
+
+app = Flask(__name__)
+
+@app.before_request
+def app_path():
+    g.path = os.path.abspath(os.getcwd())
+
+@app.route('/')
+def index():
+    host = request.headers.get('Host')
+    appname = current_app.name
+    return f'''<h1>The host for this page is {host}</h1>
+            <h2>The name of this application is {appname}</h2>
+            <h3>The path of this application on the user's device is {g.path}</h3>'''
+
+if __name__ == '__main__':
+    app.run()
+
+```
+
+After you restart your server, you should see that our hook has been run and
+`g` modified such that `index()` now knows where it lives on your computer.
+(_Now it can find its way home if it ever gets lost!_)
+
+![Index page from before with h3 text beneath that says "The path of this
+application on the user's device is
+/Users/benbotsford/Documents/new-curriculum/intro-to-flask/python-p4-request-response-cycle"](
+https://curriculum-content.s3.amazonaws.com/python/flask-request-response-cycle-hook.png)
 
 ***
 
 ## Creating responses
+
+When a view function spins up, Flask gets ready for an HTTP response as a return
+value. This can be a simple string, a multi-line string of HTML, or a
+combination of strings and codes.
+
+An important part of any response is the HTTP **status code**. Flask sets this
+to 200 by default, which indicates that the request successfully reached the
+specified resource and an appropriate response was generated. When we need to
+send a different status code, we can simply add this as a second return value
+after the response body:
+
+```py
+# index() in app/flask_app.py
+
+@app.route('/')
+def index():
+    host = request.headers.get('Host')
+    appname = current_app.name
+    return f'''<h1>The host for this page is {host}</h1>
+            <h2>The name of this application is {appname}</h2>
+            <h3>The path of this application on the user's device is {g.path}</h3>''', \
+            202
+```
+
+202 is the "Accepted" status code. This signifies that a request has been
+received by the server, but that the server has not done anything about it yet.
+We could also return 204 if there were no content on the page, or 404 if the URL
+was not found.
+
+_For more on HTTP status codes, visit the [Mozilla documentation][
+moz_http_status] here._
+
+
 
 ***
 
@@ -176,6 +305,8 @@ will be able to do moving forward.
 ## Resources
 
 - [Resource 1](https://www.python.org/doc/essays/blurb/)
-- [Reused Resource][reused resource]
+- [HTTP request methods - Mozilla][moz_http]
+- [HTTP response status codes - Mozilla][moz_http_status]
 
-[reused resource]: https://docs.python.org/3/
+[moz_http]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+[moz_http_status]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
