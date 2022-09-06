@@ -244,7 +244,7 @@ https://curriculum-content.s3.amazonaws.com/python/flask-request-response-cycle-
 
 ***
 
-## Creating responses
+## Creating Responses
 
 When a view function spins up, Flask gets ready for an HTTP response as a return
 value. This can be a simple string, a multi-line string of HTML, or a
@@ -277,36 +277,154 @@ was not found.
 _For more on HTTP status codes, visit the [Mozilla documentation][
 moz_http_status] here._
 
+There is a third, optional argument that can be added in to create headers for
+our response. This is simply a dictionary with keys for the header attributes
+mapped to their respective values.
 
+### Response Objects
 
-***
+For a more object-oriented approach to responses, you can use Flask's
+`make_response()` function. This takes 1-3 arguments in the same format as our
+earlier response: a body string, a status code, and a headers dictionary,
+respectively.
 
-## Lesson Section
+```py
+# index() in app/flask_app.py
+...
+from flask import make_response
+...
 
-<details>
-  <summary>
-    <em>Check for understanding text goes here! <code>Code statements go here.</code></em>
-  </summary>
+@app.route('/')
+def index():
+    host = request.headers.get('Host')
+    appname = current_app.name
+    response_body = f'''
+        <h1>The host for this page is {host}</h1>
+        <h2>The name of this application is {appname}</h2>
+        <h3>The path of this application on the user's device is {g.path}</h3>
+    '''
 
-  <h3>Answer.</h3>
-  <p>Elaboration on answer.</p>
-</details>
-<br/>
+    status_code = 200
+    headers = {}
+
+    return make_response(response_body, status_code, headers)
+
+```
+
+This won't change what you see in the browser, but it will make your code
+cleaner and easier to replicate (_even automate!_) in other views.
+
+_For more on response objects, visit the [Pallets Projects documentation][
+response] here._
+
+#### Special Responses
+
+There are specific cases where your response is meant to do something other
+than display an HTML body in the browser. Two cases are most common: redirects
+and aborts.
+
+The `redirect()` function is usually delivered with a "301: Moved Permanently"
+or "302: Found" status code. These signify that the URL for the resource on our
+server has been changed. Rather than torture the user with trying to find the
+new URL, we can redirect them to the current URL for the resource.
+
+`redirect()` is very simple: it takes one argument, the URL for the relocated
+resource.
+
+```py
+# example only
+
+from flask import redirect
+
+@app.route('/reginald-kenneth-dwight')
+def index():
+    return redirect('names.com/elton-john')
+
+```
+
+If you navigate to the above link, you'll notice a "404: Not Found" status code!
+This means that the resource does not exist for the website in question. If we
+want to inform users of this error in our applications, we need to use Flask's
+`abort()` function:
+
+```py
+# example only
+
+...
+from flask import abort, make_response
+...
+
+@app.route('/<stage_name>')
+def get_name(stage_name):
+    match = session.query('StageName').filter(StageName.name == stage_name)[0]
+    if not match:
+        abort(404)
+    return make_response(f'<h1>{stage_name} is an existing stage name!</h1>')
+
+```
 
 ***
 
 ## Conclusion
 
-Conclusion summary paragraph. Include common misconceptions and what students
-will be able to do moving forward.
+This has been a brief introduction to requests and responses in Flask. These
+messages allow our application to communicate with a client through the server.
+Flask does most of the work for us when setting up contexts and URL maps, but
+parsing requests and generating responses effectively will allow you to do much
+more with Flask than you've seen so far. Now that we've discussed communication
+with the frontend, let's get started on communication with the backend through
+SQLAlchemy.
+
+If you don't fully understand every concept yet, don't worry! Check below to
+make sure your code matches ours and look back at this lesson if you're having
+trouble with contexts, requests, or responses in the future.
+
+***
+
+## Solution code
+
+```py
+#!/usr/bin/env python3
+
+import os
+
+from flask import Flask, request, current_app, g, make_response
+
+app = Flask(__name__)
+
+@app.before_request
+def app_path():
+    g.path = os.path.abspath(os.getcwd())
+
+@app.route('/')
+def index():
+    host = request.headers.get('Host')
+    appname = current_app.name
+    response_body = f'''
+        <h1>The host for this page is {host}</h1>
+        <h2>The name of this application is {appname}</h2>
+        <h3>The path of this application on the user's device is {g.path}</h3>
+    '''
+
+    status_code = 200
+    headers = {}
+
+    return make_response(response_body, status_code, headers)
+
+if __name__ == '__main__':
+    app.run()
+
+```
 
 ***
 
 ## Resources
 
-- [Resource 1](https://www.python.org/doc/essays/blurb/)
+- [API - Pallets Projects](https://flask.palletsprojects.com/en/2.2.x/api/)
 - [HTTP request methods - Mozilla][moz_http]
 - [HTTP response status codes - Mozilla][moz_http_status]
+- [Response Objects - Pallets Projects][response]
 
 [moz_http]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 [moz_http_status]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+[response]: https://flask.palletsprojects.com/en/2.2.x/api/#response-objects
