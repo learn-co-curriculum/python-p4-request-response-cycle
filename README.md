@@ -381,7 +381,7 @@ trouble with contexts, requests, or responses in the future.
 
 ***
 
-## Solution code
+## Solution Code
 
 ```py
 #!/usr/bin/env python3
