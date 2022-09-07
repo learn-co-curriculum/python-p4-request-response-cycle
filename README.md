@@ -274,8 +274,7 @@ received by the server, but that the server has not done anything about it yet.
 We could also return 204 if there were no content on the page, or 404 if the URL
 was not found.
 
-_For more on HTTP status codes, visit the [Mozilla documentation][
-moz_http_status] here._
+_For more on HTTP status codes, visit the [Mozilla documentation][moz_http_status] here._
 
 There is a third, optional argument that can be added in to create headers for
 our response. This is simply a dictionary with keys for the header attributes
@@ -314,8 +313,7 @@ def index():
 This won't change what you see in the browser, but it will make your code
 cleaner and easier to replicate (_even automate!_) in other views.
 
-_For more on response objects, visit the [Pallets Projects documentation][
-response] here._
+_For more on response objects, visit the [Pallets Projects documentation][response] here._
 
 #### Special Responses
 
