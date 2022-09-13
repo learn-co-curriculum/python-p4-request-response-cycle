@@ -56,7 +56,7 @@ a `request` object- among other things- Flask manages requests through
 Let's take a look at a simple view function that uses a request object:
 
 ```py
-# app/flask_app.py
+# app/app.py
 
 from flask import Flask, request
 
@@ -97,7 +97,7 @@ have to generate this context manually. This only requires two commands:
 ```py
 # example only- no need to write this out
 
-from flask_app import app
+from app import app
 from flask import request
 
 request_context = app.test_request_context()
@@ -120,7 +120,7 @@ application we're working on and is accessible through the `flask.current_app`
 object.
 
 ```py
-# app/flask_app.py
+# app/app.py
 
 from flask import Flask, request, current_app
 
@@ -208,7 +208,7 @@ Let's set up a hook so that our views all know where our application files are
 located:
 
 ```py
-# app/flask_app.py
+# app/app.py
 
 import os
 
@@ -257,7 +257,7 @@ send a different status code, we can simply add this as a second return value
 after the response body:
 
 ```py
-# index() in app/flask_app.py
+# index() in app/app.py
 
 @app.route('/')
 def index():
@@ -288,7 +288,7 @@ earlier response: a body string, a status code, and a headers dictionary,
 respectively.
 
 ```py
-# index() in app/flask_app.py
+# index() in app/app.py
 ...
 from flask import make_response
 ...
