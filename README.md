@@ -68,11 +68,19 @@ def index():
     return f'<h1>The host for this page is {host}</h1>'
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5555)
 
 ```
 
-Navigating to `127.0.0.1:5000`, you should see the following:
+Remember to set the environment variables as well:
+
+```console
+$ export FLASK_APP=app/app.py
+$ export FLASK_RUN_PORT=5555
+```
+
+Running this app and navigating to `127.0.0.1:5555`, you should see the
+following (pardon the old port):
 
 ![Simple web page with the text "The host for this page is 127.0.0.1:5000"](
 https://curriculum-content.s3.amazonaws.com/python/flask-request-response-cycle-index.png
@@ -134,7 +142,7 @@ def index():
                <h2>The name of this application is {appname}</h2>'''
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5555)
 
 ```
 
@@ -229,7 +237,7 @@ def index():
             <h3>The path of this application on the user's device is {g.path}</h3>'''
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5555)
 
 ```
 
@@ -410,7 +418,7 @@ def index():
     return make_response(response_body, status_code, headers)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5555)
 
 ```
 
