@@ -80,10 +80,10 @@ $ export FLASK_RUN_PORT=5555
 ```
 
 Running this app and navigating to `127.0.0.1:5555`, you should see the
-following (pardon the old port):
+following:
 
-![Simple web page with the text "The host for this page is 127.0.0.1:5000"](
-https://curriculum-content.s3.amazonaws.com/python/flask-request-response-cycle-index.png
+![Simple web page with the text "The host for this page is 127.0.0.1:5555"](
+https://curriculum-content.s3.amazonaws.com/python/flask-request-response-1.png
 )
 
 This might seem a bit odd. While we did import `request`, we didn't assign it
@@ -248,7 +248,7 @@ After you restart your server, you should see that our hook has been run and
 ![Index page from before with h3 text beneath that says "The path of this
 application on the user's device is
 /Users/benbotsford/Documents/new-curriculum/intro-to-flask/python-p4-request-response-cycle"](
-https://curriculum-content.s3.amazonaws.com/python/flask-request-response-cycle-hook.png)
+https://curriculum-content.s3.amazonaws.com/python/flask-request-response-2.png)
 
 ***
 
@@ -282,7 +282,8 @@ received by the server, but that the server has not done anything about it yet.
 We could also return 204 if there were no content on the page, or 404 if the URL
 was not found.
 
-_For more on HTTP status codes, visit the [Mozilla documentation][moz_http_status] here._
+_For more on HTTP status codes, visit the [Mozilla documentation][
+moz_http_status] here._
 
 There is a third, optional argument that can be added in to create headers for
 our response. This is simply a dictionary with keys for the header attributes
