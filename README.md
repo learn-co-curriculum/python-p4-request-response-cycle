@@ -192,8 +192,8 @@ that we leave out the body of the response. `OPTIONS` requests a list of the
 HTTP methods that a resource will accept. Flask will include all three by
 default- but you can remove them or add more later on if you'd like!
 
-_For more on HTTP request methods, visit the [Mozilla documentation][moz_http]
-here._
+_For more on HTTP request methods, visit [Mozilla HTTP Request Methods][
+moz_http]._
 
 ### Request Hooks
 
@@ -322,7 +322,7 @@ def index():
 This won't change what you see in the browser, but it will make your code
 cleaner and easier to replicate (_even automate!_) in other views.
 
-_For more on response objects, visit the [Pallets Projects documentation][response]._
+_For more on response objects, visit [API Flask Documentation][response]._
 
 #### Special Responses
 
