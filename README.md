@@ -56,7 +56,7 @@ a `request` object- among other things- Flask manages requests through
 Let's take a look at a simple view function that uses a request object:
 
 ```py
-# app/app.py
+# server/app.py
 
 from flask import Flask, request
 
@@ -68,14 +68,14 @@ def index():
     return f'<h1>The host for this page is {host}</h1>'
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5555, debug=True)
 
 ```
 
-Remember to set the environment variables as well:
+Remember to set the environment variables in the `server/` directory as well:
 
 ```console
-$ export FLASK_APP=app/app.py
+$ export FLASK_APP=app.py
 $ export FLASK_RUN_PORT=5555
 ```
 
@@ -128,7 +128,7 @@ application we're working on and is accessible through the `flask.current_app`
 object.
 
 ```py
-# app/app.py
+# server/app.py
 
 from flask import Flask, request, current_app
 
@@ -142,7 +142,7 @@ def index():
                <h2>The name of this application is {appname}</h2>'''
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5555, debug=True)
 
 ```
 
@@ -216,7 +216,7 @@ Let's set up a hook so that our views all know where our application files are
 located:
 
 ```py
-# app/app.py
+# server/app.py
 
 import os
 
@@ -237,7 +237,7 @@ def index():
             <h3>The path of this application on the user's device is {g.path}</h3>'''
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5555, debug=True)
 
 ```
 
@@ -265,7 +265,7 @@ send a different status code, we can simply add this as a second return value
 after the response body:
 
 ```py
-# index() in app/app.py
+# index() in server/app.py
 
 @app.route('/')
 def index():
@@ -297,7 +297,7 @@ earlier response: a body string, a status code, and a headers dictionary,
 respectively.
 
 ```py
-# index() in app/app.py
+# index() in server/app.py
 ...
 from flask import make_response
 ...
@@ -419,7 +419,7 @@ def index():
     return make_response(response_body, status_code, headers)
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5555, debug=True)
 
 ```
 
