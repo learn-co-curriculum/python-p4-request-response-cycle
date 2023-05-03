@@ -170,11 +170,11 @@ the right view from a URL. The URL map is just as it sounds: a dictionary that
 maps URLs to the views that serve the client at those URLs. Every time we use
 the `@app.route` decorator, a new mapping is added to the URL map.
 
-We can view the URL map for ourselves in an `ipdb` shell. Run `python debug.py`
-from the base directory for this lesson and enter the following:
+We can view the URL map for ourselves in the Flask shell. Run `flask shell`
+from the `server/` directory for this lesson and enter the following:
 
 ```console
-$ ipdb> app.url_map
+$ app.url_map
 # => Map([<Rule '/static/<filename>' (GET, HEAD, OPTIONS) -> static>,
  <Rule '/' (GET, HEAD, OPTIONS) -> index>])
 ```
