@@ -282,8 +282,7 @@ received by the server, but that the server has not done anything about it yet.
 We could also return 204 if there were no content on the page, or 404 if the URL
 was not found.
 
-_For more on HTTP status codes, visit the [Mozilla documentation][
-moz_http_status]._
+_For more on HTTP status codes, visit the [Mozilla documentation][moz_http_status]._
 
 There is a third, optional argument that can be added in to create headers for
 our response. This is simply a dictionary with keys for the header attributes
